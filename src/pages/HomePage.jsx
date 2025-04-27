@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 
 const HomePage = () => {
   return (
-    <main className=" max-1280 pt-3 mx-auto">
+    <main className=" max-1280 pt-3 mx-auto mb-10">
       <section className="flex flex-row mt-20 gap-20 ">
         <div className="flex flex-col items-start gap-10">
           <h1 className="roboto-700 text-6xl text-left">
@@ -29,7 +29,7 @@ const HomePage = () => {
           </NavLink>
         </div>
         <img
-          src="src\assets\hero.png"
+          src="src\assets\hero.webp"
           className=" rounded-3xl h-[35rem]"
           alt=""
         />
