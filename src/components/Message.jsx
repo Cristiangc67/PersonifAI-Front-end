@@ -5,13 +5,32 @@ const Message = ({ index, msg }) => {
   return (
     <div
       key={index}
-      className={`mb-4 px-4 py-5 rounded-2xl w-full  ${
-        msg.role === "Dana Scully"
-          ? "text-white bg-zinc-700 text-start"
-          : "text-violet-400 bg-violet-950/60 text-start"
+      className={`mb-4 px-4 py-5 rounded-2xl  max-w-3xl  ${
+        msg.isUser ? "ml-auto" : "mr-auto"
       }`}
     >
-      <strong>{msg.role}:</strong> <ReactMarkdown>{msg.text}</ReactMarkdown>
+      <div
+        className={`flex flex-col ${msg.isUser ? "items-end" : "items-start"}`}
+      >
+        <span
+          className={`text-sm ${
+            msg.isUser ? "text-purple-400" : "text-gray-400"
+          } mb-1`}
+        >
+          {msg.role}:
+        </span>
+        <div
+          className={`rounded-2xl p-4 ${
+            msg.isUser
+              ? "bg-purple-600/20 backdrop-blur-sm border border-purple-500/20"
+              : "bg-black/20 backdrop-blur-sm border border-white/10"
+          }`}
+        >
+          <div className="text-gray-200 whitespace-pre-wrap">
+            <ReactMarkdown>{msg.text}</ReactMarkdown>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

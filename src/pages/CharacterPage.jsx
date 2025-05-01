@@ -5,27 +5,33 @@ import Details from "../components/Details";
 import { AuthContext } from "../context/AuthContext";
 import ModalDelete from "../components/ModalDelete";
 import ModalChat from "../components/ModalChat";
+import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
+import { FaPencil, FaTrash } from "react-icons/fa6";
+import { MdOutlineChatBubbleOutline } from "react-icons/md";
 
 const CharacterPage = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
   const API_URL = "http://localhost:5500/api/v1/character";
   const [character, setCharacter] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [chatModalOpen, setchatModalOpen] = useState(false);
+  const [characterSections, setCharactersections] = useState([]);
+  const [chatModalOpen, setChatModalOpen] = useState(false);
   const [masks, setMasks] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchCharacterData = async () => {
       try {
         const response = await axios.get(`${API_URL}/${id}`);
-        //console.log(response.data.data);
         setCharacter(response.data.data);
         console.log("despues de setear per", response.data.data);
       } catch (error) {
         console.log(error);
       }
     };
+
     const fetchMasks = async () => {
       try {
         const response = await axios.get(
@@ -46,159 +52,166 @@ const CharacterPage = () => {
     if (isAuthenticated) {
       fetchMasks();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, actualUser?.id, token, id]);
 
-  /* const startOrGetChat = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5500/api/v1/conversations/get-or-create",
+  useEffect(() => {
+    if (character) {
+      setCharactersections([
         {
-          userId: actualUser.id,
-          characterId: id,
-          provider: "openai", // o el que elijas por defecto
+          id: "description",
+          title: "Descripcion del Personaje",
+          content: character.description,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
-      const conversationId = response.data.data._id;
-      navigate(`/chat/${conversationId}`);
-    } catch (error) {
-      console.error("Error al obtener o crear la conversación:", error);
-    }
-  }; */
-
-  const deleteCharacter = async () => {
-    try {
-      console.log(id);
-      const response = await axios.delete(`${API_URL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+          id: "appearance",
+          title: "Vestimenta y Accesorios",
+          content: character.appearance,
         },
-      });
-
-      console.log(response);
-      navigate("/library");
-    } catch (error) {
-      console.log(error);
+        {
+          id: "personality",
+          title: "Personalidad",
+          content: character.personality,
+        },
+        { id: "scenario", title: "Escenario", content: character.scenario },
+        {
+          id: "firstmessage",
+          title: "Primer Mensaje",
+          content: character.firstMessage,
+        },
+      ]);
     }
-  };
+  }, [character]);
 
   const openModal = () => {
     setModalOpen(true);
   };
-  const modalchatOpen = () => setchatModalOpen(true);
-  const modalchatClose = () => setchatModalOpen(false);
+
+  const modalChatOpen = () => setChatModalOpen(true);
+  const modalChatClose = () => setChatModalOpen(false);
 
   const modalClose = () => {
     setModalOpen(false);
   };
 
   return (
-    <div className="py-10">
-      <div className=" w-3/4  max-1280 py-10  mx-auto bg-neutral-900 rounded-2xl">
-        {character && character.name && (
-          <h2 className="text-2xl roboto-700 tracking-wider block">
-            {character.name}
-          </h2>
-        )}
-        <div className="flex w-full gap-20 mt-10 px-10 pb-20">
-          {character && character.characterPicture && (
-            <div className=" w-2/5 items-center flex flex-col gap-10">
-              <img
-                src={character.characterPicture}
-                className="w-80 h-[30rem] rounded-xl"
-                alt=""
-              />
-              <NavLink
-                to={`/user/${character.creator._id}`}
-                className="text-white/50"
-              >
-                Creado por {character.creator.username}
-              </NavLink>
-              <button
-                onClick={modalchatOpen}
-                className=" w-4/6 mx-auto hover:from-violet-600 hover:to-fuchsia-600 roboto-500 px-4 py-2  bg-linear-to-r from-violet-500 to-fuchsia-500 rounded-3xl transition-colors ease-in duration-150 text-white  cursor-pointer "
-              >
-                Conversar
-              </button>
-            </div>
-          )}
-          <div className=" w-3/5 flex flex-col gap-10">
-            <div>
-              <h3 className="text-xl text-start nunito-500">
-                Descripcion Del Chat
-              </h3>
-              {character && character.cardDescription && (
-                <p className="text-start mt-5">{character.cardDescription}</p>
-              )}
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
+      <Navbar />
+      <main className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-black/40 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 shadow-lg shadow-purple-500/10 max-w-4xl mx-auto"
+        >
+          <div className="flex flex-col items-center md:flex-row md:items-start gap-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative w-full max-w-sm"
+            >
+              <div className="absolute -inset-1 h-[85%] rounded-xl bg-gradient-to-r from-purple-600 to-blue-400 opacity-50 blur-sm"></div>
+              {character && character.characterPicture && (
+                <>
+                  <img
+                    src={character.characterPicture}
+                    className="relative rounded-xl w-full object-cover shadow-lg z-10"
+                    alt={character.name}
+                  />
 
-            {character ? (
-              <div className="flex flex-col gap-10 h-fit">
-                <Details
-                  characterSection={character.description}
-                  characterSectionTitle={"Descripcion del Personaje"}
-                />
-                <Details
-                  characterSection={character.appearance}
-                  characterSectionTitle={"Vestimenta y accesorios"}
-                />
-                <Details
-                  characterSection={character.personality}
-                  characterSectionTitle={"Personalidad"}
-                />
-                <Details
-                  characterSection={character.scenario}
-                  characterSectionTitle={"Escenario"}
-                />
-                <Details
-                  characterSection={character.firstMessage}
-                  characterSectionTitle={"Primer mensaje"}
-                />
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                    className="mt-6"
+                  >
+                    <NavLink
+                      to={`/user/${character.creator._id}`}
+                      className="mt-3 text-center text-sm text-gray-400 relative z-10"
+                    >
+                      Creado por {character.creator.username}
+                    </NavLink>
+                    <button
+                      onClick={modalChatOpen}
+                      className="w-full flex items-center justify-center relative rounded-lg z-10 mt-5 bg-purple-600 hover:bg-purple-700 text-white text-lg py-3 shadow-lg shadow-purple-700/30"
+                    >
+                      <MdOutlineChatBubbleOutline />
+                      <span className="ml-2">Conversar</span>
+                    </button>
+                  </motion.div>
+                </>
+              )}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex-1 w-full"
+            >
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                {character?.name}
+              </h1>
+              <p className="text-lg text-gray-300 text-start mb-6">
+                {character?.cardDescription}
+              </p>
+
+              <div className="w-full flex flex-col gap-10">
+                {characterSections.length > 0 && (
+                  <div className="space-y-3">
+                    {characterSections.map((section) => (
+                      <Details
+                        key={section.id}
+                        title={section.title}
+                        content={section.content}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            ) : (
-              ""
-            )}
+              {character &&
+                isAuthenticated &&
+                actualUser.id === character.creator._id && (
+                  <div className="mt-8 flex flex-wrap gap-4">
+                    <button
+                      onClick={openModal}
+                      className="shadow-lg flex items-center shadow-red-900/80 cursor-pointer bg-red-800 hover:bg-red-700 px-4 py-2 rounded-lg"
+                    >
+                      <FaTrash />
+                      <span className="ml-2">Eliminar personaje</span>
+                    </button>
+                    <NavLink
+                      to={"edit"}
+                      className="border-purple-500 border flex px-4 py-2 rounded-lg items-center text-purple-400 hover:bg-purple-500/30"
+                    >
+                      <FaPencil />
+                      <span className="ml-2">Editar</span>
+                    </NavLink>
+                  </div>
+                )}
+            </motion.div>
           </div>
-        </div>
-        {character &&
-          isAuthenticated &&
-          actualUser.id == character.creator._id && (
-            <div className="flex gap-5 justify-center ">
-              <button
-                onClick={openModal}
-                className="bg-red-700 hover:bg-red-800 transition-colors duration-150 px-5 py-3 rounded-xl cursor-pointer"
-              >
-                Eliminar personaje
-              </button>
-              <NavLink
-                to={"edit"}
-                className="bg-zinc-700 hover:bg-zinc-800 transition-colors duration-150 px-5 py-3 rounded-xl cursor-pointer"
-              >
-                Editar
-              </NavLink>
-            </div>
-          )}
-      </div>
+        </motion.div>
+      </main>
+
       {modalOpen &&
+      id &&
       character.name &&
       isAuthenticated &&
-      actualUser.id == character.creator._id ? (
+      actualUser.id === character.creator._id ? (
         <ModalDelete
           name={character.name}
           modalClose={modalClose}
-          deleteCharacter={deleteCharacter}
+          id={id}
+          token={token}
         />
       ) : (
         ""
       )}
+
       {chatModalOpen && character.name && isAuthenticated && masks ? (
         <ModalChat
-          modalchatClose={modalchatClose}
+          modalchatClose={modalChatClose}
           masks={masks}
           actualUserId={actualUser.id}
           token={token}

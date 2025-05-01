@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const LibraryPage = () => {
   const [cards, setCards] = useState(null);
@@ -21,19 +22,22 @@ const LibraryPage = () => {
   }, []);
 
   return (
-    <div className="max-1280  flex gap-6 flex-wrap mx-auto justify-center pt-15 mb-5">
-      {cards &&
-        cards.map((card, index) => (
-          <Card
-            key={index}
-            id={card._id}
-            name={card.name}
-            characterPicture={card.characterPicture}
-            cardDescription={card.cardDescription}
-            creator={card.creator}
-          />
-        ))}
-    </div>
+    <>
+      <Navbar />
+      <div className="max-1280  flex gap-6 flex-wrap mx-auto justify-center pt-15 mb-5">
+        {cards &&
+          cards.map((card, index) => (
+            <Card
+              key={index}
+              id={card._id}
+              name={card.name}
+              characterPicture={card.characterPicture}
+              cardDescription={card.cardDescription}
+              creator={card.creator}
+            />
+          ))}
+      </div>
+    </>
   );
 };
 

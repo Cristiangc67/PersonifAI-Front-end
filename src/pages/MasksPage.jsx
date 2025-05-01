@@ -2,6 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { useParams } from "react-router";
+import MaskCard from "../components/MaskCard";
+import { FaPlus } from "react-icons/fa6";
+import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
 
 const MasksPage = () => {
   const { token, actualUser } = useContext(AuthContext);
@@ -9,7 +13,7 @@ const MasksPage = () => {
   const [userMasks, setUserMasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMask, setNewMask] = useState({ name: "", description: "" });
-  const [editingMaskId, setEditingMaskId] = useState(null); // ← Para saber si es edición
+  const [editingMaskId, setEditingMaskId] = useState(null);
   const [error, setError] = useState("");
 
   const API_URL = "http://localhost:5500/api/v1/users";
@@ -60,7 +64,6 @@ const MasksPage = () => {
 
     try {
       if (editingMaskId) {
-        // EDITAR
         const response = await axios.put(
           `http://localhost:5500/api/v1/masks/${editingMaskId}`,
           {
@@ -77,7 +80,6 @@ const MasksPage = () => {
           prev.map((m) => (m._id === editingMaskId ? response.data.data : m))
         );
       } else {
-        // CREAR
         const response = await axios.post(
           "http://localhost:5500/api/v1/masks/",
           {
@@ -119,55 +121,54 @@ const MasksPage = () => {
   };
 
   return (
-    <div className="py-10">
-      <div className="w-3/4 max-1280 mx-auto bg-neutral-900 rounded-xl p-6 shadow">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Máscaras</h2>
-          <button
-            className="bg-violet-700 text-white px-4 py-2 rounded hover:bg-violet-800 cursor-pointer"
-            onClick={() => handleOpenModal()}
-          >
-            + Nueva Máscara
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
+      <Navbar />
+
+      <main className="container mx-auto px-4 pt-28 pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-between items-center mb-12"
+        >
+          <div className="flex w-full justify-between items-center mb-4">
+            <h2 className="text-3xl font-bold text-white">Máscaras</h2>
+            <button
+              className="bg-violet-700 text-white px-4 py-2 rounded-lg hover:bg-violet-800 cursor-pointer flex items-center gap-5"
+              onClick={() => handleOpenModal()}
+            >
+              <FaPlus />
+              <span>Nueva Máscara</span>
+            </button>
+          </div>
+        </motion.div>
 
         {userMasks.length === 0 ? (
           <p>No tenés máscaras todavía.</p>
         ) : (
-          <ul className="space-y-10 overflow-y-scroll">
-            {userMasks.map((mask) => (
-              <li
-                key={mask._id}
-                className="bg-neutral-800 p-4 rounded-xl flex justify-between items-start gap-4"
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {userMasks.map((mask, index) => (
+              <motion.div
+                key={mask.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 * index }}
+                className="h-full"
               >
-                <div className="text-start">
-                  <strong>{mask.name}</strong>
-                  {mask.description && <p>{mask.description}</p>}
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleOpenModal(mask)}
-                    className="bg-zinc-600 hover:bg-zinc-700 transition-colors duration-150 px-3 py-2 rounded-xl cursor-pointer"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDeleteMask(mask._id)}
-                    className="bg-red-700 hover:bg-red-800 transition-colors duration-150 px-3 py-2 rounded-xl cursor-pointer"
-                  >
-                    Borrar
-                  </button>
-                </div>
-              </li>
+                <MaskCard
+                  mask={mask}
+                  handleOpenModal={handleOpenModal}
+                  handleDeleteMask={handleDeleteMask}
+                />
+              </motion.div>
             ))}
-          </ul>
+          </div>
         )}
-      </div>
+      </main>
 
-      {/* MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-neutral-950/75  flex justify-center items-center z-50">
-          <div className="bg-neutral-900 p-6 rounded-lg shadow-md w-full max-w-md">
+          <div className="bg-black p-6 rounded-lg shadow-md w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">
               {editingMaskId ? "Editar Máscara" : "Crear Nueva Máscara"}
             </h3>
@@ -177,26 +178,26 @@ const MasksPage = () => {
               placeholder="Nombre"
               value={newMask.name}
               onChange={handleInputChange}
-              className="bg-neutral-800 rounded-xl px-5 py-2 mt-5 w-full"
+              className="bg-black/40 border-white/10 text-white  border px-3 py-2 rounded-lg w-full"
             />
             <textarea
               name="description"
               placeholder="Descripción"
               value={newMask.description}
               onChange={handleInputChange}
-              className="bg-neutral-800 rounded-xl px-5 py-2 mt-5 w-full"
+              className="bg-black/40 border-white/10 text-white  border rounded-lg px-5 py-2 mt-5 w-full"
             />
             {error && <p className="text-red-600 mb-2">{error}</p>}
             <div className="flex justify-end gap-2 mt-5">
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-800 cursor-pointer"
+                className="px-4 py-2 border rounded-lg hover:bg-gray-800 cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleCreateOrUpdateMask}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 cursor-pointer"
               >
                 {editingMaskId ? "Actualizar" : "Crear"}
               </button>

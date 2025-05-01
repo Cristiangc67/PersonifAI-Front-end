@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, NavLink } from "react-router";
+import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const CreateCharacterPage = () => {
   const { token, actualUser, isAuthenticated } = useContext(AuthContext);
@@ -16,7 +19,6 @@ const CreateCharacterPage = () => {
     personality: "",
     appearance: "",
     scenario: "",
-    creator: "",
     cardDescription: "",
   });
   const API_URL = "http://localhost:5500/api/v1/character";
@@ -95,11 +97,11 @@ const CreateCharacterPage = () => {
         console.log("userId", userId);
         console.log(form);
 
-        setForm({ ...form, creator: userId });
-
         for (const key in form) {
           formData.append(key, form[key]);
         }
+        formData.append("creator", isAuthenticated ? actualUser.id : "");
+        console.log("*****************", formData);
 
         if (image) {
           formData.append("image", image);
@@ -113,16 +115,10 @@ const CreateCharacterPage = () => {
           });
 
           console.log(response.data);
-
-          if (response.ok) {
-            console.log("Personaje creado:", response.data.data);
-          } else {
-            console.error("Error en la creación:", result.message);
-          }
+          navigate(`/character/${response.data.data.character._id}`);
         } catch (err) {
           console.error("Error de red:", err);
         }
-        navigate(`/character/${res.data.data._id}`);
       }
     } catch (error) {
       console.log(error);
@@ -130,159 +126,232 @@ const CreateCharacterPage = () => {
   };
 
   return (
-    <div className="max-1280 bg-neutral-900 mx-auto mt-10 py-10 rounded-2xl">
-      <h2 className="text-3xl roboto-700">
-        {isEditMode ? "Editar Personaje" : "Crear Personaje"}
-      </h2>
-      <form
-        action=""
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-        className="px-36 py-14 flex flex-col gap-10 text-start"
-      >
-        <label className=" w-fit text-2xl roboto-600" htmlFor="inputFile">
-          Imagen del personaje
-        </label>
-
-        {isAuthenticated && (image || previewUrl) ? (
-          <img
-            className="h-[750px] w-[500px] contain-content object-cover rounded-2xl "
-            src={previewUrl}
-            alt=""
-          />
-        ) : (
-          ""
-        )}
-        <input
-          className=" block w-fit text-lg text-slate-500
-        file:mr-4 file:py-2 file:px-4
-        file:rounded-full file:border-0
-        file:text-lg file:font-semibold
-        file:bg-neutral-700 file:text-white
-        hover:file:bg-neutral-600"
-          type="file"
-          name="characterimage"
-          accept="image/*"
-          onChange={handleFileChange}
-          id="inputFile"
-        />
-        <div className="flex flex-col">
-          <label htmlFor="name" className="text-2xl roboto-600">
-            Nombre del personaje
-          </label>
-          <input
-            className="bg-neutral-800 rounded-xl px-5 py-2 mt-5"
-            required
-            minLength={2}
-            maxLength={50}
-            type="text"
-            id="name"
-            name="name"
-            onChange={handleChange}
-            value={form.name}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="name" className="text-2xl roboto-600">
-            Nombre del personaje en el chat
-          </label>
-          <input
-            className="bg-neutral-800 rounded-xl px-5 py-2 mt-5"
-            required
-            minLength={2}
-            maxLength={50}
-            type="text"
-            id="nameCharacter"
-            name="nameCharacter"
-            onChange={handleChange}
-            value={form.nameCharacter}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className=" text-2xl roboto-600" htmlFor="description">
-            Descripcion del chat
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="cardDescription"
-            id="cardDescription"
-            onChange={handleChange}
-            value={form.cardDescription}
-          ></textarea>
-        </div>
-        <div className="flex flex-col">
-          <label className=" text-2xl roboto-600" htmlFor="description">
-            Descripcion del personaje
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="description"
-            id="description"
-            onChange={handleChange}
-            value={form.description}
-          ></textarea>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="personality" className="text-2xl roboto-600">
-            Personalidad
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="personality"
-            id="personality"
-            onChange={handleChange}
-            value={form.personality}
-          ></textarea>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="appearance" className="text-2xl roboto-600">
-            Vestimenta y accesorios
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="appearance"
-            id="appearance"
-            onChange={handleChange}
-            value={form.appearance}
-          ></textarea>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="scenario" className="text-2xl roboto-600">
-            Escenario
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="scenario"
-            id="scenario"
-            onChange={handleChange}
-            value={form.scenario}
-          ></textarea>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="firstMessage" className="text-2xl roboto-600">
-            Primer Mensaje
-          </label>
-          <textarea
-            className="bg-neutral-800 resize-none rounded-xl px-5 py-2 h-48 mt-5"
-            required
-            name="firstMessage"
-            id="firstMessage"
-            onChange={handleChange}
-            value={form.firstMessage}
-          ></textarea>
-        </div>
-        <button
-          type="submit"
-          className=" w-5/6 mx-auto hover:from-violet-600 hover:to-fuchsia-600 roboto-500 px-4 py-2  bg-linear-to-r from-violet-500 to-fuchsia-500 rounded-3xl transition-colors ease-in duration-150 text-white mt-20 cursor-pointer nunito-600 text-xl "
+    <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
+      <Navbar />
+      <main className="container mx-auto px-4 pt-24 pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto"
         >
-          {isEditMode ? "Guardar" : "Crear"}
-        </button>
-      </form>
+          <div className="flex items-center mb-8">
+            <NavLink
+              to={isEditMode ? `/character/${id}` : "/library"}
+              className=" flex items-center text-gray-400 hover:text-white mr-4 cursor-pointer"
+            >
+              <FaArrowLeft className="mr-4" />
+              <span>Volver</span>
+            </NavLink>
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              {isEditMode ? "Editar Personaje" : "Crear Personaje"}
+            </h1>
+          </div>
+
+          <form
+            action=""
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+            className="space-y-6"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-1">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="space-y-4"
+                >
+                  <label className="text-lg text-white font-bold">
+                    Imagen del Personaje
+                  </label>
+                  <div className="relative">
+                    <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-purple-600 to-blue-400 opacity-50 blur-sm"></div>
+                    {isAuthenticated ? (
+                      <img
+                        className=" relative aspect-3/4  w-full h-full object-cover rounded-lg z-10 "
+                        src={
+                          previewUrl ? previewUrl : "/src/assets/character.webp"
+                        }
+                        alt=""
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      onClick={() =>
+                        document.getElementById("inputFile")?.click()
+                      }
+                      className="w-full border py-2 rounded-lg border-purple-500 text-purple-400 hover:bg-purple-500/30 cursor-pointer"
+                    >
+                      Seleccionar Imagen
+                    </button>
+                    <input
+                      className="hidden"
+                      type="file"
+                      name="characterimage"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="inputFile"
+                    />
+                  </div>
+                </motion.div>
+              </div>
+
+              <div className="md:col-span-2 space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                >
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="name" className="text-white">
+                      Nombre del personaje
+                    </label>
+                    <input
+                      className="bg-black/40 border-white/10 text-white  border px-3 py-2 rounded-lg"
+                      required
+                      minLength={2}
+                      maxLength={50}
+                      type="text"
+                      id="name"
+                      name="name"
+                      onChange={handleChange}
+                      value={form.name}
+                    />
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                >
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="name" className="text-white">
+                      Nombre del personaje en el chat
+                    </label>
+                    <input
+                      className="bg-black/40 border-white/10 text-white border px-3 py-2 rounded-lg"
+                      required
+                      minLength={2}
+                      maxLength={50}
+                      type="text"
+                      id="nameCharacter"
+                      name="nameCharacter"
+                      onChange={handleChange}
+                      value={form.nameCharacter}
+                    />
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                  className="bg-black/40 backdrop-blur-sm border border-purple-500/20 rounded-lg p-4 space-y-6 shadow shadow-purple-600 "
+                >
+                  <div className="flex flex-col text-start">
+                    <label className=" text-white mb-2" htmlFor="description">
+                      Descripcion del chat
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="cardDescription"
+                      id="cardDescription"
+                      onChange={handleChange}
+                      value={form.cardDescription}
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col text-start">
+                    <label className=" text-white mb-2" htmlFor="description">
+                      Descripcion del personaje
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="description"
+                      id="description"
+                      onChange={handleChange}
+                      value={form.description}
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="personality" className="text-white mb-2">
+                      Personalidad
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="personality"
+                      id="personality"
+                      onChange={handleChange}
+                      value={form.personality}
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="appearance" className="text-white mb-2">
+                      Vestimenta y accesorios
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="appearance"
+                      id="appearance"
+                      onChange={handleChange}
+                      value={form.appearance}
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="scenario" className="text-white mb-2">
+                      Escenario
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="scenario"
+                      id="scenario"
+                      onChange={handleChange}
+                      value={form.scenario}
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col text-start">
+                    <label htmlFor="firstMessage" className="text-white mb-2">
+                      Primer Mensaje
+                    </label>
+                    <textarea
+                      className="bg-black/40 border-white/10 text-white min-h-[100px] py-1 px-2 border rounded-lg"
+                      required
+                      name="firstMessage"
+                      id="firstMessage"
+                      onChange={handleChange}
+                      value={form.firstMessage}
+                    ></textarea>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-8">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                className="w-full max-w-xs"
+              >
+                <button
+                  type="submit"
+                  className=" rounded-lg w-full bg-purple-600 hover:bg-purple-700 text-white py-6 shadow-lg shadow-purple-700/30 cursor-pointer "
+                >
+                  {isEditMode ? "Guardar" : "Crear"}
+                </button>
+              </motion.div>
+            </div>
+          </form>
+        </motion.div>
+      </main>
     </div>
   );
 };

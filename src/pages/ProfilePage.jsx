@@ -4,6 +4,10 @@ import { useParams, NavLink } from "react-router";
 import axios from "axios";
 import ModalFollower from "../components/ModalFollower.jsx";
 import CharactersUser from "../components/CharactersUser.jsx";
+import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
+import { FaPencil } from "react-icons/fa6";
+import { FaUserPlus } from "react-icons/fa";
 
 const ProfilePage = () => {
   const { isAuthenticated, logout, actualUser, token } =
@@ -83,95 +87,153 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="py-10">
-      <div className="flex justify-center items-center flex-col w-3/4 app max-1280 pt-10 h-fit  mx-auto bg-neutral-900 rounded-2xl">
+    <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
+      <Navbar />
+      <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="flex flex-col items-center mb-10">
-          {userProfile && userProfile.profilePicture && (
-            <img
-              src={
-                userProfile.profilePicture != null
-                  ? `${userProfile.profilePicture}`
-                  : ""
-              }
-              className=" w-36 h-36 rounded-full"
-              alt=""
-            />
-          )}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative mb-6"
+          >
+            {userProfile && userProfile.profilePicture && (
+              <img
+                src={
+                  userProfile.profilePicture != null
+                    ? `${userProfile.profilePicture}`
+                    : ""
+                }
+                className="w-32 h-32 border-4 border-purple-500/30 rounded-full shadow-lg shadow-purple-500/20"
+                alt=""
+              />
+            )}
+
+            {/* <div className="absolute -bottom-2 -right-2">
+              <NavLink className="rounded-full flex items-center bg-black border border-white/20 hover:bg-purple-900/20">
+                <FaPencil />
+                <span>Editar Perfil</span>
+              </NavLink>
+            </div> */}
+          </motion.div>
+          <motion.h1
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent"
+          >
+            {userProfile && userProfile.username && (
+              <h1 className="text-2xl mt-5">
+                {userProfile.username.charAt(0).toUpperCase() +
+                  userProfile.username.slice(1)}
+              </h1>
+            )}
+          </motion.h1>
+
           {userProfile && userProfile.username && (
-            <h2 className="text-2xl mt-5">{userProfile.username}</h2>
-          )}
-          {userProfile && userProfile.username && (
-            <div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex items-center gap-6 mt-4"
+            >
               <button
                 onClick={() => openModal("followers")}
-                className="text-lg text-neutral-400 cursor-pointer mt-5"
+                className=" flex flex-col cursor-pointer mt-5"
               >
-                {userProfile.followers.length} seguidores
+                <span className=" text-xl font-bold">
+                  {userProfile.followers.length}
+                </span>
+                <span className="text-sm text-gray-400">seguidores</span>
               </button>
-              <span> - </span>
+              <div className=" h-10 w-px bg-white/10"></div>
               <button
                 onClick={() => openModal("following")}
-                className="text-lg text-neutral-400 cursor-pointer mt-5"
+                className="flex flex-col  cursor-pointer mt-5"
               >
-                {userProfile.following.length} siguiendo
+                <span className="text-xl font-bold">
+                  {userProfile.following.length}
+                </span>
+                <span className="text-sm text-gray-400">siguiendo</span>
               </button>
-            </div>
+            </motion.div>
           )}
-          {userProfile &&
-            userProfile._id &&
-            (userProfile._id != actualUser.id ? (
-              userProfile.followers.some(
-                (follower) => follower._id === actualUser.id
-              ) ? (
-                <button
-                  onClick={togglefollow}
-                  className="mt-4 bg-neutral-100 text-black px-5 py-2 rounded-3xl hover:bg-neutral-300 transition-all duration-150 "
-                >
-                  Dejar de Seguir
-                </button>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-6 flex gap-4"
+          >
+            {userProfile &&
+              userProfile._id &&
+              (userProfile._id != actualUser.id ? (
+                userProfile.followers.some(
+                  (follower) => follower._id === actualUser.id
+                ) ? (
+                  <button
+                    onClick={togglefollow}
+                    className="mt-4 bg-white text-black px-5 py-2 rounded-lg hover:bg-white/40 transition-all duration-150  cursor-pointer"
+                  >
+                    Dejar de Seguir
+                  </button>
+                ) : (
+                  <button
+                    onClick={togglefollow}
+                    className="mt-4 flex items-center gap-2 bg-white text-black px-5 py-2 rounded-lg hover:bg-white/40 transition-all duration-150 cursor-pointer "
+                  >
+                    <FaUserPlus />
+                    <span>Seguir</span>
+                  </button>
+                )
               ) : (
-                <button
-                  onClick={togglefollow}
-                  className="mt-4 bg-neutral-100 text-black px-5 py-2 rounded-3xl hover:bg-neutral-300 transition-all duration-150 "
-                >
-                  Seguir
-                </button>
-              )
+                ""
+              ))}
+            {actualUser && actualUser.id == id ? (
+              <NavLink
+                to={"edit"}
+                className="rounded-lg flex items-center px-5 py-2 bg-black border border-white/20 hover:bg-purple-900/20 cursor-pointer"
+              >
+                <FaPencil />
+                <span className="ml-2">Editar Perfil</span>
+              </NavLink>
             ) : (
               ""
-            ))}
-        </div>
-        {modalOpen && userProfile && (
-          <ModalFollower
-            modalType={modalType}
-            closeModal={closeModal}
-            userProfile={userProfile}
-          />
-        )}
-        <ul className=" w-full px-28 h-96 overflow-y-scroll">
-          {userProfile
-            ? userProfile.createdCharacters.map((character, index) => {
-                return (
-                  <CharactersUser
-                    index={index}
-                    id={character._id}
-                    characterPicture={character.characterPicture}
-                    name={character.name}
-                  />
-                );
-              })
-            : "NO hay nada"}
-        </ul>
-        {actualUser && actualUser.id == id ? (
-          <NavLink
-            to={"edit"}
-            className="bg-zinc-700 hover:bg-zinc-800 transition-colors duration-150 px-5 py-3 rounded-xl cursor-pointer"
+            )}
+          </motion.div>
+
+          {modalOpen && userProfile && (
+            <ModalFollower
+              modalType={modalType}
+              closeModal={closeModal}
+              userProfile={userProfile}
+            />
+          )}
+
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            className="mt-5 "
           >
-            Editar
-          </NavLink>
-        ) : (
-          ""
-        )}
+            <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-start">
+              Mis Personajes
+            </h2>
+            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userProfile
+                ? userProfile.createdCharacters.map((character, index) => {
+                    return (
+                      <CharactersUser
+                        index={index}
+                        id={character._id}
+                        characterPicture={character.characterPicture}
+                        name={character.name}
+                      />
+                    );
+                  })
+                : "NO hay nada"}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

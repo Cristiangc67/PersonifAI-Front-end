@@ -5,6 +5,7 @@ import HistoryChats from "../components/HistoryChats";
 import axios from "axios";
 import { useParams, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthContext";
+import Navbar from "../components/Navbar";
 
 const ChatPage = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
@@ -25,11 +26,18 @@ const ChatPage = () => {
   }, [id, token]);
 
   return (
-    <div className="flex app pt-3">
-      <HistoryChats />
-      {chat ? <Chat chat={chat} id={id} /> : ""}
-      <ChatBar />
-    </div>
+    <>
+      <Navbar />
+      <div className="flex app pt-3 overflow-x-hidden">
+        {actualUser && chat ? (
+          <HistoryChats userId={actualUser.id} chat={chat} />
+        ) : (
+          ""
+        )}
+        {chat ? <Chat chat={chat} id={id} /> : ""}
+        {chat ? <ChatBar chat={chat} /> : ""}
+      </div>
+    </>
   );
 };
 

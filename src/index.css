@@ -6,7 +6,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #101010;
+  background-color: #000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -51,6 +51,10 @@
 
 .max-1280 {
   max-width: 1280px;
+}
+
+.drop-shadow-rose-400 {
+  filter: drop-shadow(10px -15px 20px #75172e);
 }
 
 /* General styling */

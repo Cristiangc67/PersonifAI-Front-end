@@ -1,7 +1,12 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 
 const Forbidden = () => {
-  return <div>Forbidden</div>;
+  return (
+    <>
+      <Navbar /> <div>Forbidden</div>;
+    </>
+  );
 };
 
 export default Forbidden;

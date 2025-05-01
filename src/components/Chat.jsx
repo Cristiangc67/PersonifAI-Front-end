@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ReactMarkdown from "react-markdown";
+import ChatInput from "./ChatInput";
 import Message from "./Message";
-import axios from "axios";
 
 const Chat = ({ chat, id }) => {
-  const API_URL = "http://localhost:5500/api/v1/conversations";
   const maskName = chat.mask.name;
   const characterName = chat.character.nameCharacter;
-
-  const [input, setInput] = useState("");
   const [chatSession, setChatSession] = useState(null);
   const [apiKey, setApiKey] = useState("");
   const [apiKeyError, setApiKeyError] = useState("");
+
+  const messagesEndRef = useRef(null);
 
   const validateApiKey = async (key) => {
     try {
@@ -33,6 +31,7 @@ const Chat = ({ chat, id }) => {
 
   let assemblechat = chat.messages.map((message) => ({
     role: message.role === "model" ? characterName : maskName,
+    isUser: message.role === "model" ? false : true,
     text: message.parts[0].text,
   }));
   assemblechat.shift();
@@ -84,77 +83,42 @@ const Chat = ({ chat, id }) => {
     const newKey = e.target.value;
     setApiKey(newKey);
   };
-
-  const interactWithCharacter = async (chatSession, userPrompt) => {
-    try {
-      const result = await chatSession.sendMessage(userPrompt);
-      console.log(chatSession);
-      return result.response.text();
-    } catch (error) {
-      console.error("Error interacting with the API:", error);
-      return "Ocurrió un error al obtener la respuesta.";
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (!input.trim() || !chatSession) return;
-    try {
-      axios.patch(`${API_URL}/${id}`, {
-        role: "user",
-        text: input,
-      });
-
-      setMessages((prev) => [...prev, { role: maskName, text: input }]);
-      setInput("");
-      const response = await interactWithCharacter(chatSession, input);
-      axios.patch(`${API_URL}/${id}`, {
-        role: "model",
-        text: response,
-      });
-      setMessages((prev) => [...prev, { role: characterName, text: response }]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [messages]);
 
   return (
-    <div className="w-full bg-neutral-900 mx-auto">
-      <span>API KEY</span>
-      <input
-        type="password"
-        value={apiKey}
-        onChange={handleApiKeyChange}
-        placeholder="Ingresa tu API Key"
-      />
-      {apiKeyError && <p className="text-red-500">{apiKeyError}</p>}
-      <div className="h-11/12 bg-neutral-900 pt-10 px-30 overflow-y-scroll">
+    <div className="w-full h-full bg-neutral-900 mx-auto  overflow-x-hidden">
+      <div className="flex items-center gap-2 justify-center">
+        <label for="api" className="me-3 font-semibold text-gray-400">
+          {`API KEY ${chat.provider.toUpperCase()}`}
+        </label>
+        <input
+          id="api"
+          type="password"
+          value={apiKey}
+          className="bg-white/5 mt-1 border border-white/10 rounded-lg px-4 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          onChange={handleApiKeyChange}
+          placeholder="Ingresa tu API Key"
+        />
+        {apiKeyError && <p className="text-red-500">{apiKeyError}</p>}
+      </div>
+      <div className=" h-[86.8%] bg-neutral-900 pt-10 px-30 overflow-y-scroll">
         {messages.map((msg, index) => (
           <Message key={index} index={index} msg={msg} />
         ))}
+        <div ref={messagesEndRef} />
       </div>
-      <form
-        className="w-full h-1/12 flex justify-center gap-4"
-        onSubmit={handleSend}
-      >
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-1/2 h-10 rounded-3xl border border-gray-500 px-4 bg-neutral-700 focus:outline-0"
-          placeholder="Escribe tu mensaje..."
-        />
-        <button
-          className="bg-white hover:bg-neutral-300 h-10 rounded-full cursor-pointer"
-          type="submit"
-        >
-          <img
-            src="src/assets/send.svg"
-            className="h-10 p-1 pointer-events-none"
-            alt="Enviar"
-          />
-        </button>
-      </form>
+
+      <ChatInput
+        chatSession={chatSession}
+        id={id}
+        setMessages={setMessages}
+        maskName={maskName}
+        characterName={characterName}
+      />
     </div>
   );
 };

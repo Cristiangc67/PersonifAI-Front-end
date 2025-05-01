@@ -10,7 +10,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className=" z-50 relative flex justify-between items-center bg-neutral-900 w-full h-20 rounded-2xl  px-20 max-1280 mx-auto">
+    <nav className=" mt-3 z-50 relative flex justify-between items-center bg-neutral-900 w-full h-20 rounded-2xl  px-20 max-1280 mx-auto">
       <NavLink
         to="/"
         className="text-2xl roboto-600 bg-linear-65 from-purple-500 to-pink-500 text-transparent bg-clip-text"
@@ -30,7 +30,7 @@ const Navbar = () => {
           Libreria
         </NavLink>
         <NavLink
-          to="/chat"
+          to="/create-character"
           className={({ isActive }) =>
             (isActive ? "text-violet-700" : "text-neutral-50") +
             " hover:text-violet-700 roboto-500 transition-colors ease-in duration-150"

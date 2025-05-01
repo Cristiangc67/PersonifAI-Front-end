@@ -15,11 +15,8 @@ import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
     <AuthProvider>
-      <div className=" app  pt-3 ">
-        <Navbar />
-        <Outlet />
-        <Footer />
-      </div>
+      <Outlet />
+      {/* <Footer /> */}
     </AuthProvider>
   );
 }
