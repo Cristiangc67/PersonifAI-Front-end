@@ -1,15 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router";
+import {motion} from "framer-motion"
 
 const ModalFollower = ({ modalType, closeModal, userProfile }) => {
   console.log(userProfile.followers[0]);
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10 ">
-      <div className="bg-neutral-900 p-5 rounded-lg shadow-lg w-80">
+    <motion.div
+            className="fixed z-50 inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y:20 }}>
+      <div className="bg-black/80 border flex flex-col justify-between border-purple-500/20 backdrop-blur-lg text-white w-full max-h-2/4 max-w-md px-6 py-10 rounded-xl">
         <h2 className="text-xl font-bold mb-4">
           {modalType === "followers" ? "Seguidores" : "Siguiendo"}
         </h2>
-        <ul className="">
+        <ul className=" overflow-y-scroll">
           {(modalType === "followers"
             ? userProfile.followers
             : userProfile.following
@@ -37,7 +43,7 @@ const ModalFollower = ({ modalType, closeModal, userProfile }) => {
           Cerrar
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

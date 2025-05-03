@@ -5,7 +5,7 @@ import axios from "axios";
 import ModalFollower from "../components/ModalFollower.jsx";
 import CharactersUser from "../components/CharactersUser.jsx";
 import Navbar from "../components/Navbar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaPencil } from "react-icons/fa6";
 import { FaUserPlus } from "react-icons/fa";
 
@@ -201,6 +201,8 @@ const ProfilePage = () => {
             )}
           </motion.div>
 
+          <AnimatePresence>
+
           {modalOpen && userProfile && (
             <ModalFollower
               modalType={modalType}
@@ -208,6 +210,7 @@ const ProfilePage = () => {
               userProfile={userProfile}
             />
           )}
+          </AnimatePresence>
 
           <motion.div
             initial={{ y: 30, opacity: 0 }}

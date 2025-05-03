@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import ModalDelete from "../components/ModalDelete";
 import ModalChat from "../components/ModalChat";
 import Navbar from "../components/Navbar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaPencil, FaTrash } from "react-icons/fa6";
 import { MdOutlineChatBubbleOutline } from "react-icons/md";
 
@@ -208,8 +208,9 @@ const CharacterPage = () => {
       ) : (
         ""
       )}
-
+      <AnimatePresence>
       {chatModalOpen && character.name && isAuthenticated && masks ? (
+        
         <ModalChat
           modalchatClose={modalChatClose}
           masks={masks}
@@ -217,9 +218,11 @@ const CharacterPage = () => {
           token={token}
           characterId={character._id}
         />
+        
       ) : (
         ""
       )}
+      </AnimatePresence>
     </div>
   );
 };

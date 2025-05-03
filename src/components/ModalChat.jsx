@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router";
 import axios from "axios";
+import {motion} from "framer-motion"
 
 const ModalChat = ({
   modalchatClose,
@@ -40,29 +41,36 @@ const ModalChat = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10">
-      <div className="bg-neutral-900 p-5 rounded-lg shadow-lg w-80">
-        <h2 className="text-xl font-bold mb-4 roboto-700">
+    <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y:20 }}>
+      <div className="bg-black/80 border border-purple-500/20 backdrop-blur-lg text-white w-full max-w-md px-6 py-10 rounded-xl">
+        <h2 className="text-xl font-bold mb-12 roboto-700 text-start">
           Proveedor de AI y mascara
         </h2>
-        <form className="flex flex-col gap-6">
-          <label htmlFor="provider" className="roboto-600">
+        <form className="flex flex-col gap-8">
+          <div className="space-y-2 flex flex-col">
+          <label htmlFor="provider" className="roboto-600 text-start">
             Proveedor
           </label>
           <select
             name="provider"
             id="provider"
-            className="bg-zinc-600 rounded px-2 py-1"
+            className="px-3 py-3 rounded-xl w-full bg-black/40 border border-white/10 text-white"
             value={provider}
             onChange={(e) => setProvider(e.target.value)}
           >
-            <option className="bg-zinc-500" value="gemini">
+            <option className="bg-black/90 border border-white/10 text-white" value="gemini">
               Gemini
             </option>
-            <option className="bg-zinc-500" value="openai">
+            <option className="bg-black/90 border border-white/10 text-white" value="openai">
               OpenAI
             </option>
           </select>
+          </div>
 
           {masks.length === 0 ? (
             <div className="nunito-500">
@@ -75,47 +83,48 @@ const ModalChat = ({
               </NavLink>
             </div>
           ) : (
-            <>
-              <label htmlFor="mask" className="roboto-600">
+            <div className="space-y-2 flex flex-col">
+              <label htmlFor="mask" className="roboto-600 text-start">
                 Máscara
               </label>
               <select
                 name="mask"
                 id="mask"
-                className="bg-zinc-600 rounded px-2 py-1"
+                className="px-3 py-3 rounded-xl w-full bg-black/40 border border-white/10 text-white "
                 value={selectedMask}
                 onChange={(e) => setSelectedMask(e.target.value)}
               >
                 {masks.map((mask) => (
                   <option
                     key={mask._id}
-                    className="bg-zinc-500"
+                    className="bg-black/90 border border-white/10 text-white "
                     value={mask._id}
                   >
                     {mask.name || "Sin nombre"}
                   </option>
                 ))}
               </select>
-            </>
+            </div>
           )}
         </form>
 
-        <div className="mt-10 flex gap-3">
-          <button
-            onClick={startOrGetChat}
-            className="w-full hover:from-violet-600 hover:to-fuchsia-600 roboto-500 px-4 py-2 bg-linear-to-r from-violet-500 to-fuchsia-500 rounded-lg transition-colors ease-in duration-150 text-white cursor-pointer"
-          >
-            Conversar
-          </button>
+        <div className="mt-10 flex justify-end gap-5">
           <button
             onClick={modalchatClose}
-            className="w-full roboto-500 bg-neutral-700 text-white px-4 py-2 rounded-lg hover:bg-neutral-800 cursor-pointer transition-colors ease-in duration-150"
+            className="px-4 py-2 border text-lg font-semibold rounded-lg hover:bg-purple-700/20 cursor-pointer"
           >
             Cancelar
           </button>
+          <button
+            onClick={startOrGetChat}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 font-semibold text-white text-lg  rounded-lg shadow-lg shadow-purple-700/30  cursor-pointer"
+          >
+            Conversar
+          </button>
         </div>
       </div>
-    </div>
+    
+    </motion.div>
   );
 };
 

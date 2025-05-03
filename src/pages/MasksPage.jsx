@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import MaskCard from "../components/MaskCard";
 import { FaPlus } from "react-icons/fa6";
 import Navbar from "../components/Navbar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MasksPage = () => {
   const { token, actualUser } = useContext(AuthContext);
@@ -153,6 +153,7 @@ const MasksPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 * index }}
+                
                 className="h-full"
               >
                 <MaskCard
@@ -165,10 +166,14 @@ const MasksPage = () => {
           </div>
         )}
       </main>
+      <AnimatePresence>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-neutral-950/75  flex justify-center items-center z-50">
-          <div className="bg-black p-6 rounded-lg shadow-md w-full max-w-md">
+        <motion.div className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10" initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        exit={{ opacity: 0, y:20 }}>
+          <div className="bg-black/80 border border-purple-500/20 backdrop-blur-lg text-white w-full max-w-md px-6 py-10 rounded-xl">
             <h3 className="text-lg font-semibold mb-4">
               {editingMaskId ? "Editar Máscara" : "Crear Nueva Máscara"}
             </h3>
@@ -203,8 +208,9 @@ const MasksPage = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 };
