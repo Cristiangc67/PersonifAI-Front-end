@@ -13,7 +13,7 @@ const ChatBar = ({ chat }) => {
     <>
       <button
         onClick={() => setToggleBar(!toggleBar)}
-        className="absolute right-5 top-[120px] z-50 hover:bg-neutral-300 rounded-xl transition-colors duration-300 "
+        className="absolute right-5 top-[120px]  z-50 hover:bg-neutral-300 rounded-xl transition-colors duration-300 "
       >
         {toggleBar ? (
           <IoIosArrowBack size={40} className=" text-gray-700" />

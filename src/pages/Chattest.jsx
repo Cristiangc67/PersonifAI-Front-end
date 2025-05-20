@@ -12,7 +12,7 @@ const Chattest = () => {
     const fetchConversationData = async () => {
       try {
         const response = await axios.get(`${API_URL}/${id}`);
-        console.log(response.data.data);
+  
         setChat(response.data.data);
       } catch (error) {
         console.log(error);

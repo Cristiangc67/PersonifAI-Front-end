@@ -8,15 +8,26 @@ const ChatInput = ({
   setMessages,
   maskName,
   characterName,
+  setIsLoading,
+  provider
 }) => {
   const API_URL = "http://localhost:5500/api/v1/conversations";
   const [input, setInput] = useState("");
 
   const interactWithCharacter = async (chatSession, userPrompt) => {
     try {
+
       const result = await chatSession.sendMessage(userPrompt);
-      console.log(chatSession);
-      return result.response.text();
+      let textResult = null
+     if(provider==="gemini"){
+      textResult=result.response.text()  
+
+
+     }else if(provider==="llama"){
+      textResult=result.text
+     }
+      
+      return  textResult                          //result.response.candidates[0].content.parts[0].text //result.response.text();
     } catch (error) {
       console.error("Error interacting with the API:", error);
       return "Ocurrió un error al obtener la respuesta.";
@@ -24,13 +35,14 @@ const ChatInput = ({
   };
 
   const handleSend = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     if (!input.trim() || !chatSession) return;
     try {
-      axios.patch(`${API_URL}/${id}`, {
+      /* axios.patch(`${API_URL}/${id}`, {
         role: "user",
         text: input,
-      });
+      }); */
 
       setMessages((prev) => [
         ...prev,
@@ -38,16 +50,19 @@ const ChatInput = ({
       ]);
       setInput("");
       const response = await interactWithCharacter(chatSession, input);
-      axios.patch(`${API_URL}/${id}`, {
+      /* axios.patch(`${API_URL}/${id}`, {
         role: "model",
         text: response,
-      });
+      }); */
       setMessages((prev) => [
         ...prev,
         { role: characterName, isUser: false, text: response },
       ]);
     } catch (error) {
       console.log(error);
+    }finally {
+      
+      setIsLoading(false);
     }
   };
 

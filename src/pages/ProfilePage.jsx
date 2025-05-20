@@ -26,9 +26,9 @@ const ProfilePage = () => {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data.data);
+ 
         setUserProfile(response.data.data);
-        console.log("userProfile", userProfile);
+
       } catch (err) {
         console.log(err);
       }
@@ -40,8 +40,6 @@ const ProfilePage = () => {
     try {
       const follower = actualUser.id;
       const usuario = id;
-      console.log("follower" + actualUser.id);
-      console.log("usuario a seguir" + id);
 
       const response = await axios.post(
         `${API_URL}/${id}/follow`,
@@ -109,12 +107,6 @@ const ProfilePage = () => {
               />
             )}
 
-            {/* <div className="absolute -bottom-2 -right-2">
-              <NavLink className="rounded-full flex items-center bg-black border border-white/20 hover:bg-purple-900/20">
-                <FaPencil />
-                <span>Editar Perfil</span>
-              </NavLink>
-            </div> */}
           </motion.div>
           <motion.h1
             initial={{ y: 20, opacity: 0 }}

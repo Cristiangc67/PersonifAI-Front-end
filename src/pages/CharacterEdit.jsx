@@ -38,8 +38,7 @@ const CharacterEdit = () => {
 
     const formData = new FormData();
     const userId = isAuthenticated ? actualUser.id : "";
-    console.log("userId", userId);
-    console.log(form);
+  
 
     for (const key in form) {
       formData.append(key, form[key]);
@@ -56,11 +55,11 @@ const CharacterEdit = () => {
         },
       });
 
-      console.log(response.data);
+
 
       if (response.ok) {
         console.log("Personaje editado:", response.data.data);
-        // Podés redirigir o limpiar el formulario
+
       } else {
         console.error("Error en la creación:", result.message);
       }

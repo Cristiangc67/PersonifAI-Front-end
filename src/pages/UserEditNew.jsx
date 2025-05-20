@@ -33,8 +33,6 @@ const UserEditNew = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
-        console.log("edit", actualUser);
 
         setForm(res.data.data);
         setPreviewUrl(res.data.data.profilePicture);
@@ -72,10 +70,10 @@ const UserEditNew = () => {
         formData.append("image", image);
       }
       try {
-        console.log("Contenido del FormData:");
+        /* console.log("Contenido del FormData:");
         for (const [key, value] of formData.entries()) {
           console.log(`${key}:`, value);
-        }
+        } */
         await axios.patch(`${API_URL}/${id}/edit`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,

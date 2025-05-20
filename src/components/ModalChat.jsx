@@ -9,6 +9,7 @@ const ModalChat = ({
   actualUserId,
   characterId,
   token,
+  isFromChat
 }) => {
   const [provider, setProvider] = useState("gemini");
   const [selectedMask, setSelectedMask] = useState(masks[0]?._id || "");
@@ -16,7 +17,7 @@ const ModalChat = ({
 
   const startOrGetChat = async () => {
     try {
-      console.log(token);
+ 
       const response = await axios.post(
         "http://localhost:5500/api/v1/conversations/get-or-create",
         {
@@ -24,6 +25,8 @@ const ModalChat = ({
           characterId,
           provider,
           mask: selectedMask,
+          isFromChat
+
         },
         {
           headers: {
@@ -33,6 +36,7 @@ const ModalChat = ({
       );
 
       const conversationId = response.data.data.conversation._id;
+      modalchatClose()
 
       navigate(`/chat/${conversationId}`);
     } catch (error) {
@@ -42,7 +46,7 @@ const ModalChat = ({
 
   return (
     <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
+            className="fixed inset-0 flex items-center z-50 justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
@@ -68,6 +72,9 @@ const ModalChat = ({
             </option>
             <option className="bg-black/90 border border-white/10 text-white" value="openai">
               OpenAI
+            </option>
+            <option className="bg-black/90 border border-white/10 text-white" value="llama">
+              Llama
             </option>
           </select>
           </div>

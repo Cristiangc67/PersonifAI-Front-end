@@ -9,50 +9,52 @@ import Deepseek from "/src/assets/deepseek-logo-icon-1.svg";
 import Gemini from "/src/assets/google-gemini-icon-1.svg";
 import Footer from "../components/Footer";
 
+
 const HomeNew = () => {
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
       <Navbar />
 
-      <section className="container mx-auto px-4 pt-10 pb-16 ">
-        <div className="grid gap-8 md:grid-cols-2 items-center">
+      <section className="container w-full md:mx-auto md:px-4 md:pt-10 pb-16 ">
+        <div className="grid gap-0 md:gap-8 md:grid-cols-2 items-center mt-96 md:mt-0 ">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6 text-start"
+            className="space-y-6 relative z-10 text-start w-full order-2 md:order-1"
           >
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-white text-start">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-white text-center md:text-start">
               Crea, personaliza y conversa con{" "}
               <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                 personajes impulsados por IA
               </span>
             </h1>
-            <p className="text-gray-300 text-xl">
+            <p className="text-gray-300 text-xl ">
               Desata tu creatividad o explora los personajes creados por otros
               usuarios.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg cursor-pointer">
-                <NavLink to="/login">Empezar a conversar</NavLink>
-              </button>
-              <button className="border-purple-600 text-purple-400 hover:bg-purple-600/40 border rounded-lg px-4 py-2  cursor-pointer">
-                <NavLink to="/library">Explorar Máscaras</NavLink>
-              </button>
+            <div className="flex justify-center md:justify-normal flex-wrap gap-4">
+              <NavLink to="/login" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg cursor-pointer">
+                Empezar a conversar
+              </NavLink>
+              <NavLink to="/library" className="border-purple-600 text-purple-400 hover:bg-purple-600/40 border rounded-lg px-4 py-2  cursor-pointer">
+                Explorar Personajes
+              </NavLink>
             </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative h-full flex justify-end"
+            className="absolute  md:relative h-fit w-full md:h-full  md:right-0  top-20 md:top-0 block md:flex md:justify-end order-1 md:order-2"
           >
             <img
               src="src\assets\herotry.png"
               alt="AI Character"
-              className="relative rounded-2xl w-3/5 h-auto object-cover z-10 drop-shadow-rose-400 pb-5 "
+              className="relative hero  md:m-0 h-[40rem] z-0 mx-auto md:w-full lg:w-3/5 md:h-auto object-cover pb-5 "
             />
-            <div className="absolute w-3/5 h-3/4  -bottom-1  rounded-2xl  bg-linear-to-t from-black to-[rgba(0, 0, 0, 0)]    blur-lg z-20"></div>
+            
           </motion.div>
         </div>
       </section>
@@ -178,13 +180,13 @@ const HomeNew = () => {
             </div>
 
             <div className="flex gap-4">
-              <button className="flex items-center px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white cursor-pointer">
+              <NavLink to={"/create-character"} className="flex items-center px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white cursor-pointer">
                 <PiUserCirclePlus className="mr-2 h-4 w-4" />
                 Crear Personaje
-              </button>
-              <button className="border-purple-600 border-1 px-4 py-2 rounded-lg  text-purple-400 hover:bg-purple-600/40 cursor-pointer">
+              </NavLink>
+              <NavLink to={"/library"} className="border-purple-600 border-1 px-4 py-2 rounded-lg  text-purple-400 hover:bg-purple-600/40 cursor-pointer">
                 Ir a la librería
-              </button>
+              </NavLink>
             </div>
           </motion.div>
 

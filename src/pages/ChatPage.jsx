@@ -11,15 +11,19 @@ const ChatPage = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
   const { id } = useParams();
   const [chat, setChat] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const API_URL = "http://localhost:5500/api/v1/conversations";
   useEffect(() => {
     const fetchConversationData = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(`${API_URL}/${id}`);
-        console.log(response.data.data);
+
         setChat(response.data.data);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     };
     fetchConversationData();
@@ -30,12 +34,18 @@ const ChatPage = () => {
       <Navbar />
       <div className="flex app pt-3 overflow-x-hidden">
         {actualUser && chat ? (
-          <HistoryChats userId={actualUser.id} chat={chat} />
+          <HistoryChats userId={actualUser.id}  chat={chat} />
         ) : (
           ""
         )}
-        {chat ? <Chat chat={chat} id={id} /> : ""}
-        {chat ? <ChatBar chat={chat} /> : ""}
+        {isLoading ? (
+    <div className="w-full h-full bg-neutral-900 mx-auto  overflow-x-hidden animate-pulse"></div>
+  ) : (
+    <>
+      {chat && <Chat  chat={chat} id={id} />}
+      {chat && <ChatBar  chat={chat} />}
+    </>
+  )}
       </div>
     </>
   );

@@ -9,26 +9,31 @@ const API_URL = "http://localhost:5500/api/v1/auth";
 export const AuthProvider = ({ children }) => {
   const [actualUser, setActualUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+    const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        if (decoded.exp * 1000 > Date.now()) {
-          setActualUser({
-            id: decoded.userId,
-            email: decoded.email,
-            username: decoded.username,
-            image: decoded.image,
-          });
-        } else {
+    const initializeAuth = () => {
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          if (decoded.exp * 1000 > Date.now()) {
+            setActualUser({
+              id: decoded.userId,
+              email: decoded.email,
+              username: decoded.username,
+              image: decoded.image,
+            });
+          } else {
+            logout();
+          }
+        } catch (error) {
           logout();
         }
-      } catch (error) {
-        logout();
       }
-    }
+      setIsLoading(false); 
+    };
+    initializeAuth()
   }, [token]);
 
   const signup = async (username, email, password) => {
@@ -121,6 +126,7 @@ export const AuthProvider = ({ children }) => {
     updateUserImage,
     refreshUser,
     isAuthenticated: !!actualUser,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

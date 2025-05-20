@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import {motion} from "framer-motion"
 
 const ModalFollower = ({ modalType, closeModal, userProfile }) => {
-  console.log(userProfile.followers[0]);
+
   return (
     <motion.div
             className="fixed z-50 inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"

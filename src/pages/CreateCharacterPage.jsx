@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa6";
 
 const CreateCharacterPage = () => {
-  const { token, actualUser, isAuthenticated } = useContext(AuthContext);
+  const { token, actualUser, isAuthenticated, isLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id);
@@ -21,6 +21,7 @@ const CreateCharacterPage = () => {
     scenario: "",
     cardDescription: "",
   });
+  const [loading,setLoading] = useState(false)
   const API_URL = "http://localhost:5500/api/v1/character";
 
   const [image, setImage] = useState(null);
@@ -29,30 +30,36 @@ const CreateCharacterPage = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
-    if (!actualUser || !actualUser.id) {
-      navigate("/forbidden");
+    if (isLoading) return;
+    if(isAuthenticated=== false) {navigate("/login")
+      return
     }
+    /* if (!actualUser || !actualUser.id) {
+      navigate("/forbidden");
+      return
+    } */
     if (isEditMode) {
-      console.log("xd");
-      console.log(actualUser);
+  
       axios
         .get(`${API_URL}/${id}`)
         .then((res) => {
           if (
             actualUser.id != res.data.data.creator._id ||
             isAuthenticated == false
-          )
+          ){
             navigate("/forbidden");
-          console.log(res.data);
+            return
+          }
+     
           setForm(res.data.data);
           setPreviewUrl(res.data.data.characterPicture);
-          console.log(actualUser.id != res.data.data.creator._id);
+
         })
         .catch((err) => {
           console.error("Error al obtener el personaje:", err);
         });
     }
-  }, [actualUser, id, isEditMode]);
+  }, [isLoading,isAuthenticated,actualUser, id, isEditMode]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -82,39 +89,44 @@ const CreateCharacterPage = () => {
         if (image) {
           formData.append("image", image);
         }
+        
         try {
+          setLoading(true)
           await axios.patch(`${API_URL}/${id}`, formData, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
+          navigate(`/character/${id}`);
+          
         } catch (error) {
-          console.log(console.log("formulario actualizado", error));
+          console.log("f", error);
         }
+        
       } else {
         const formData = new FormData();
         const userId = isAuthenticated ? actualUser.id : "";
-        console.log("userId", userId);
-        console.log(form);
+
 
         for (const key in form) {
           formData.append(key, form[key]);
         }
         formData.append("creator", isAuthenticated ? actualUser.id : "");
-        console.log("*****************", formData);
+  
 
         if (image) {
           formData.append("image", image);
         }
 
         try {
+          setLoading(true)
           const response = await axios.post(`${API_URL}/`, formData, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
 
-          console.log(response.data);
+  
           navigate(`/character/${response.data.data.character._id}`);
         } catch (err) {
           console.error("Error de red:", err);
@@ -127,7 +139,11 @@ const CreateCharacterPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-purple-900/20">
+     
       <Navbar />
+    {loading?(<main className="w-full h-[90vh] flex justify-center items-center ">
+      <div className="loader"></div>
+    </main>):(
       <main className="container mx-auto px-4 pt-24 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -182,8 +198,9 @@ const CreateCharacterPage = () => {
 
                   <div className="pt-2">
                     <button
-                      onClick={() =>
-                        document.getElementById("inputFile")?.click()
+                      onClick={(e) =>{
+                        e.preventDefault()
+                        document.getElementById("inputFile")?.click()}
                       }
                       className="w-full border py-2 rounded-lg border-purple-500 text-purple-400 hover:bg-purple-500/30 cursor-pointer"
                     >
@@ -351,7 +368,7 @@ const CreateCharacterPage = () => {
             </div>
           </form>
         </motion.div>
-      </main>
+      </main>)}
     </div>
   );
 };

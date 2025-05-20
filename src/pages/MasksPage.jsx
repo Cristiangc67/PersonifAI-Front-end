@@ -15,12 +15,14 @@ const MasksPage = () => {
   const [newMask, setNewMask] = useState({ name: "", description: "" });
   const [editingMaskId, setEditingMaskId] = useState(null);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
   const API_URL = "http://localhost:5500/api/v1/users";
 
   useEffect(() => {
     const fetchUserMasks = async () => {
       try {
+        setIsLoading(true)
         const response = await axios.get(`${API_URL}/${id}/masks`, {
           headers: {
             authorization: `Bearer ${token}`,
@@ -29,6 +31,8 @@ const MasksPage = () => {
         setUserMasks(response.data.data.masks);
       } catch (err) {
         console.log(err);
+      }finally{
+        setIsLoading(false)
       }
     };
     fetchUserMasks();
@@ -143,73 +147,75 @@ const MasksPage = () => {
           </div>
         </motion.div>
 
-        {userMasks.length === 0 ? (
-          <p>No tenés máscaras todavía.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {userMasks.map((mask, index) => (
-              <motion.div
-                key={mask.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 * index }}
-                
-                className="h-full"
-              >
-                <MaskCard
-                  mask={mask}
-                  handleOpenModal={handleOpenModal}
-                  handleDeleteMask={handleDeleteMask}
-                />
-              </motion.div>
-            ))}
-          </div>
-        )}
+        { isLoading ? <div className="loader mx-auto"></div> : (
+
+          userMasks.length === 0 ? (
+            <p>No tenés máscaras todavía.</p>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {userMasks.map((mask, index) => (
+                <motion.div
+                  key={mask.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 * index }}
+
+                  className="h-full"
+                >
+                  <MaskCard
+                    mask={mask}
+                    handleOpenModal={handleOpenModal}
+                    handleDeleteMask={handleDeleteMask}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          ))}
       </main>
       <AnimatePresence>
 
-      {isModalOpen && (
-        <motion.div className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10" initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-        exit={{ opacity: 0, y:20 }}>
-          <div className="bg-black/80 border border-purple-500/20 backdrop-blur-lg text-white w-full max-w-md px-6 py-10 rounded-xl">
-            <h3 className="text-lg font-semibold mb-4">
-              {editingMaskId ? "Editar Máscara" : "Crear Nueva Máscara"}
-            </h3>
-            <input
-              type="text"
-              name="name"
-              placeholder="Nombre"
-              value={newMask.name}
-              onChange={handleInputChange}
-              className="bg-black/40 border-white/10 text-white  border px-3 py-2 rounded-lg w-full"
-            />
-            <textarea
-              name="description"
-              placeholder="Descripción"
-              value={newMask.description}
-              onChange={handleInputChange}
-              className="bg-black/40 border-white/10 text-white  border rounded-lg px-5 py-2 mt-5 w-full"
-            />
-            {error && <p className="text-red-600 mb-2">{error}</p>}
-            <div className="flex justify-end gap-2 mt-5">
-              <button
-                onClick={handleCloseModal}
-                className="px-4 py-2 border rounded-lg hover:bg-gray-800 cursor-pointer"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleCreateOrUpdateMask}
-                className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 cursor-pointer"
-              >
-                {editingMaskId ? "Actualizar" : "Crear"}
-              </button>
+        {isModalOpen && (
+          <motion.div className="fixed inset-0 flex items-center justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10" initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: 20 }}>
+            <div className="bg-black/80 border border-purple-500/20 backdrop-blur-lg text-white w-full max-w-md px-6 py-10 rounded-xl">
+              <h3 className="text-lg font-semibold mb-4">
+                {editingMaskId ? "Editar Máscara" : "Crear Nueva Máscara"}
+              </h3>
+              <input
+                type="text"
+                name="name"
+                placeholder="Nombre"
+                value={newMask.name}
+                onChange={handleInputChange}
+                className="bg-black/40 border-white/10 text-white  border px-3 py-2 rounded-lg w-full"
+              />
+              <textarea
+                name="description"
+                placeholder="Descripción"
+                value={newMask.description}
+                onChange={handleInputChange}
+                className="bg-black/40 border-white/10 text-white  border rounded-lg px-5 py-2 mt-5 w-full"
+              />
+              {error && <p className="text-red-600 mb-2">{error}</p>}
+              <div className="flex justify-end gap-2 mt-5">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 border rounded-lg hover:bg-gray-800 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleCreateOrUpdateMask}
+                  className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-600 cursor-pointer"
+                >
+                  {editingMaskId ? "Actualizar" : "Crear"}
+                </button>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

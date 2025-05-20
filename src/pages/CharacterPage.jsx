@@ -26,7 +26,7 @@ const CharacterPage = () => {
       try {
         const response = await axios.get(`${API_URL}/${id}`);
         setCharacter(response.data.data);
-        console.log("despues de setear per", response.data.data);
+ 
       } catch (error) {
         console.log(error);
       }
@@ -217,6 +217,7 @@ const CharacterPage = () => {
           actualUserId={actualUser.id}
           token={token}
           characterId={character._id}
+          isFromChat={false}
         />
         
       ) : (

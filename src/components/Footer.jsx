@@ -19,7 +19,7 @@ const Footer = () => {
 
   const quickLinks = [
     { name: "Librería", url: "/library" },
-    { name: "Chat", url: "/chat" },
+    { name: "Crear Personaje", url: "/create-character" },
     { name: "Planes", url: "/plans" },
   ];
 

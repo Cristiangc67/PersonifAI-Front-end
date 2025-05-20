@@ -1,10 +1,10 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
-const Message = ({ index, msg }) => {
+const Message = ({  msg }) => {
   return (
     <div
-      key={index}
+      
       className={`mb-4 px-4 py-5 rounded-2xl  max-w-3xl  ${
         msg.isUser ? "ml-auto" : "mr-auto"
       }`}
@@ -26,7 +26,7 @@ const Message = ({ index, msg }) => {
               : "bg-black/20 backdrop-blur-sm border border-white/10"
           }`}
         >
-          <div className="text-gray-200 whitespace-pre-wrap">
+          <div className="text-gray-200 whitespace-pre-wrap text-start">
             <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         </div>

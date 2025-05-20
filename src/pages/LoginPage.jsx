@@ -20,9 +20,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (videoRef.current && playingVideo) {
-      console.log("******************");
-      console.log(videoRef.current);
-      console.log(playingVideo);
+   
       videoRef.current.src = `src/assets/videos/${playingVideo}.mp4`;
       videoRef.current.play();
     }
@@ -41,24 +39,24 @@ const LoginPage = () => {
     <>
       <Navbar />
       <div className="flex app pt-3 justify-center">
-        <div className="relative flex justify-center  ">
+        <div className="relative w-full flex justify-center  ">
           {playingVideo && (
             <video
               ref={videoRef}
               autoPlay
               muted
               loop
-              className=" h-10/12 rounded-3xl mt-5 shadow-2xl shadow-indigo-700/50 "
+              className="hidden lg:block h-10/12 rounded-3xl mt-5 shadow-2xl shadow-indigo-700/50 "
             ></video>
           )}
-          <div className=" h-9/12 w-3/6 absolute top-14 bg-neutral-900 rounded-4xl shadow-2xl">
+          <div className=" h-fit w-full pb-10 md:w-5/6 lg:w-3/6 absolute top-14 bg-neutral-900 rounded-4xl shadow-2xl">
             <h2 className="text-start px-15 pt-14 roboto-600 text-3xl">
               Ingresar
             </h2>
             <form
               onSubmit={handleSubmit}
               action=""
-              className="px-15 pt-15 flex flex-col gap-10"
+              className=" px-5 md:px-15 pt-15 flex flex-col gap-10"
             >
               <div className="flex flex-col ">
                 <label htmlFor="email" className="text-start nunito-400">
