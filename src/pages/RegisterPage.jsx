@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (videoRef.current && playingVideo) {
-      videoRef.current.src = `src/assets/videos/${playingVideo}.mp4`;
+      videoRef.current.src = `/assets/videos/${playingVideo}.mp4`;
       videoRef.current.play();
     }
   }, [playingVideo]);

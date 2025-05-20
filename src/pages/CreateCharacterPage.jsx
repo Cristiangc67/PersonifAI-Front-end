@@ -187,7 +187,7 @@ const CreateCharacterPage = () => {
                       <img
                         className=" relative aspect-3/4  w-full h-full object-cover rounded-lg z-10 "
                         src={
-                          previewUrl ? previewUrl : "/src/assets/character.webp"
+                          previewUrl ? previewUrl : "/assets/character.webp"
                         }
                         alt=""
                       />

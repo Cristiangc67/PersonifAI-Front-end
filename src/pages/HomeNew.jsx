@@ -4,9 +4,9 @@ import { NavLink } from "react-router";
 import { LuRocket, LuSparkles, LuBookOpen } from "react-icons/lu";
 import { PiUserCirclePlus } from "react-icons/pi";
 import Navbar from "../components/Navbar";
-import Openai from "../assets/chatgpt-icon-1.svg";
+/* import Openai from "../assets/chatgpt-icon-1.svg";
 import Deepseek from "../assets/deepseek-logo-icon-1.svg";
-import Gemini from "../assets/google-gemini-icon-1.svg";
+import Gemini from "../assets/google-gemini-icon-1.svg"; */
 import Footer from "../components/Footer";
 
 
@@ -50,7 +50,7 @@ const HomeNew = () => {
             className="absolute  md:relative h-fit w-full md:h-full  md:right-0  top-20 md:top-0 block md:flex md:justify-end order-1 md:order-2"
           >
             <img
-              src="src\assets\herotry.png"
+              src="\assets\herotry.png"
               alt="AI Character"
               className="relative hero  md:m-0 h-[40rem] z-0 mx-auto md:w-full lg:w-3/5 md:h-auto object-cover pb-5 "
             />
@@ -85,7 +85,7 @@ const HomeNew = () => {
               name: "ChatGPT",
               icon: (
                 <div className="w-16 h-16 bg-green-800 rounded-full flex items-center justify-center">
-                  <img src={Openai} alt="" />
+                  <img src="/assets/chatgpt-icon-1.svg" alt="" />
                 </div>
               ),
               description:
@@ -95,7 +95,7 @@ const HomeNew = () => {
               name: "Gemini",
               icon: (
                 <div className="w-16 h-16 bg-neutral-200 rounded-full flex items-center justify-center">
-                  <img src={Gemini} alt="" />
+                  <img src="/assets/google-gemini-icon-1.svg" alt="" />
                 </div>
               ),
               description:
@@ -105,7 +105,7 @@ const HomeNew = () => {
               name: "DeepSeek",
               icon: (
                 <div className="w-16 h-16 bg-neutral-200 rounded-full flex items-center justify-center">
-                  <img src={Deepseek} alt="" />
+                  <img src="/assets/deepseek-logo-icon-1.svg" alt="" />
                 </div>
               ),
               description:
@@ -198,7 +198,7 @@ const HomeNew = () => {
           >
             <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-purple-600/40 to-blue-500/40 opacity-75 blur-xl"></div>
             <img
-              src="/src/assets/tale.webp"
+              src="/assets/tale.webp"
               alt="Fantasy Characters"
               className="relative rounded-2xl shadow-2xl w-full h-auto object-cover z-10"
             />
