@@ -5,7 +5,7 @@ import {motion} from "framer-motion"
 
 const ModalDelete = ({ modalClose, name, token, id }) => {
   const navigate = useNavigate();
-  const API_URL = "http://localhost:5500/api/v1/character";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
   const deleteCharacter = async (characterId) => {
     try {
  

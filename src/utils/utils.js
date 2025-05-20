@@ -15,7 +15,7 @@ export const createLlamaChatSession = (characterName, initialHistory = []) => {
     conversation.push({ role: 'user', content: userMessage });
   
     try {
-      const res = await axios.post("http://localhost:8080/v1/chat/completions", {
+      const res = await axios.post("https://jkf327f0-8080.brs.devtunnels.ms/v1/chat/completions", {
         "model": "L3-8B-Stheno-v3.2-IQ4_XS-imat",
         "messages": conversation,
         "temperature": 0.9,

@@ -12,7 +12,7 @@ import { FaUserPlus } from "react-icons/fa";
 const ProfilePage = () => {
   const { isAuthenticated, logout, actualUser, token } =
     useContext(AuthContext);
-  const API_URL = "http://localhost:5500/api/v1/users";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/users";
   const [userProfile, setUserProfile] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");

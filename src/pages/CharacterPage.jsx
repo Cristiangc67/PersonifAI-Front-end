@@ -12,7 +12,7 @@ import { MdOutlineChatBubbleOutline } from "react-icons/md";
 
 const CharacterPage = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
-  const API_URL = "http://localhost:5500/api/v1/character";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
   const [character, setCharacter] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [characterSections, setCharactersections] = useState([]);
@@ -35,7 +35,7 @@ const CharacterPage = () => {
     const fetchMasks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5500/api/v1/users/${actualUser.id}/masks`,
+          `https://personifai-back-end.onrender.com/api/v1/users/${actualUser.id}/masks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

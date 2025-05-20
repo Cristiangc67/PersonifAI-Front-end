@@ -17,7 +17,7 @@ const MasksPage = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false)
 
-  const API_URL = "http://localhost:5500/api/v1/users";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/users";
 
   useEffect(() => {
     const fetchUserMasks = async () => {
@@ -69,7 +69,7 @@ const MasksPage = () => {
     try {
       if (editingMaskId) {
         const response = await axios.put(
-          `http://localhost:5500/api/v1/masks/${editingMaskId}`,
+          `https://personifai-back-end.onrender.com/api/v1/masks/${editingMaskId}`,
           {
             name: newMask.name,
             description: newMask.description,
@@ -85,7 +85,7 @@ const MasksPage = () => {
         );
       } else {
         const response = await axios.post(
-          "http://localhost:5500/api/v1/masks/",
+          "https://personifai-back-end.onrender.com/api/v1/masks/",
           {
             ...newMask,
             userId: id,
@@ -109,7 +109,7 @@ const MasksPage = () => {
   const handleDeleteMask = async (maskId) => {
     try {
       await axios.delete(
-        `http://localhost:5500/api/v1/masks/${maskId}`,
+        `https://personifai-back-end.onrender.com/api/v1/masks/${maskId}`,
 
         {
           headers: {

@@ -7,7 +7,7 @@ const Chattest = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
   const { id } = useParams();
   const [chat, setChat] = useState(null);
-  const API_URL = "http://localhost:5500/api/v1/conversations";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
   useEffect(() => {
     const fetchConversationData = async () => {
       try {

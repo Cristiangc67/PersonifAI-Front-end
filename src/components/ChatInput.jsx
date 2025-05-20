@@ -11,7 +11,7 @@ const ChatInput = ({
   setIsLoading,
   provider
 }) => {
-  const API_URL = "http://localhost:5500/api/v1/conversations";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
   const [input, setInput] = useState("");
 
   const interactWithCharacter = async (chatSession, userPrompt) => {
@@ -39,10 +39,10 @@ const ChatInput = ({
     e.preventDefault();
     if (!input.trim() || !chatSession) return;
     try {
-      /* axios.patch(`${API_URL}/${id}`, {
+      axios.patch(`${API_URL}/${id}`, {
         role: "user",
         text: input,
-      }); */
+      });
 
       setMessages((prev) => [
         ...prev,
@@ -50,10 +50,10 @@ const ChatInput = ({
       ]);
       setInput("");
       const response = await interactWithCharacter(chatSession, input);
-      /* axios.patch(`${API_URL}/${id}`, {
+      axios.patch(`${API_URL}/${id}`, {
         role: "model",
         text: response,
-      }); */
+      });
       setMessages((prev) => [
         ...prev,
         { role: characterName, isUser: false, text: response },

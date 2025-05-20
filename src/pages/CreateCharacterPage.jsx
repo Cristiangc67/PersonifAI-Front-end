@@ -22,7 +22,7 @@ const CreateCharacterPage = () => {
     cardDescription: "",
   });
   const [loading,setLoading] = useState(false)
-  const API_URL = "http://localhost:5500/api/v1/character";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
 
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null);

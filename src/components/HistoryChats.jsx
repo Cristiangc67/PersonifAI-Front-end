@@ -17,7 +17,7 @@ const HistoryChats = ({ userId, chat }) => {
 
   const {id} = useParams()
   const [conversations, setConversations] = useState(null);
-  const API_URL = "http://localhost:5500/api/v1/conversations";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
   useEffect(() => {
     const fetchCharacterConversations = async () => {
       const getConversations = await axios.get(
@@ -61,7 +61,7 @@ const HistoryChats = ({ userId, chat }) => {
     const fetchMasks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5500/api/v1/users/${userId}/masks`,
+          `https://personifai-back-end.onrender.com/api/v1/users/${userId}/masks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -12,7 +12,7 @@ const ChatPage = () => {
   const { id } = useParams();
   const [chat, setChat] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = "http://localhost:5500/api/v1/conversations";
+  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
   useEffect(() => {
     const fetchConversationData = async () => {
       try {
