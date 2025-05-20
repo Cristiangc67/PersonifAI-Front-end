@@ -4,9 +4,9 @@ import { NavLink } from "react-router";
 import { LuRocket, LuSparkles, LuBookOpen } from "react-icons/lu";
 import { PiUserCirclePlus } from "react-icons/pi";
 import Navbar from "../components/Navbar";
-import Openai from "/src/assets/chatgpt-icon-1.svg";
-import Deepseek from "/src/assets/deepseek-logo-icon-1.svg";
-import Gemini from "/src/assets/google-gemini-icon-1.svg";
+import Openai from "../assets/chatgpt-icon-1.svg";
+import Deepseek from "../assets/deepseek-logo-icon-1.svg";
+import Gemini from "../assets/google-gemini-icon-1.svg";
 import Footer from "../components/Footer";
 
 
