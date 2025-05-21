@@ -25,6 +25,7 @@ const ChatInput = ({
 
      }else if(provider==="llama"){
       textResult=result.text
+      console.log(textResult)
      }
       
       return  textResult                          //result.response.candidates[0].content.parts[0].text //result.response.text();
