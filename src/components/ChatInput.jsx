@@ -24,7 +24,7 @@ const ChatInput = ({
 
 
      }else if(provider==="llama"){
-      textResult=result.text
+      textResult=result
       console.log(textResult)
      }
       
