@@ -19,7 +19,7 @@ const ModalChat = ({
     try {
  
       const response = await axios.post(
-        "http://localhost:5500/api/v1/conversations/get-or-create",
+        "https://personifai-back-end.onrender.com/api/v1/conversations/get-or-create",
         {
           userId: actualUserId,
           characterId,
