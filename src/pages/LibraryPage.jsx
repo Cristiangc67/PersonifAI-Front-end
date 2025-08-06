@@ -10,22 +10,20 @@ const LibraryPage = () => {
   const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
 
   useEffect(() => {
+  const fetchCards = async () => {
     try {
-      
-      const fetchCards = async () => {
-        
-        const response = await axios.get(`${API_URL}/`);
- 
-        setCards(response.data.data);
-      };
-      setIsLoading(true)
-      fetchCards();
+      setIsLoading(true);
+      const response = await axios.get(`${API_URL}/`);
+      setCards(response.data.data);
     } catch (error) {
       console.log(error);
-    }finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
-  }, [cards]);
+  };
+
+  fetchCards();
+}, []);
 
   return (
     <>
