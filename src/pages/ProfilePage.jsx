@@ -100,7 +100,7 @@ const ProfilePage = () => {
                 src={
                   userProfile.profilePicture != null
                     ? `${userProfile.profilePicture}`
-                    : ""
+                    : "/assets/user.png"
                 }
                 className="w-32 h-32 border-4 border-purple-500/30 rounded-full shadow-lg shadow-purple-500/20"
                 alt=""

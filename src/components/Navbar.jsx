@@ -4,14 +4,14 @@ import { AuthContext } from "../context/AuthContext.jsx";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion"
 import { FaUser } from "react-icons/fa6";
-import { PiMaskHappyFill,PiBooksFill,PiUserCirclePlusFill, PiCurrencyCircleDollarFill    } from "react-icons/pi";
+import { PiMaskHappyFill, PiBooksFill, PiUserCirclePlusFill, PiCurrencyCircleDollarFill } from "react-icons/pi";
 
 
 const Navbar = () => {
   const { isAuthenticated, logout, actualUser } = useContext(AuthContext);
   const [openMenu, setOpenMenu] = useState(false)
 
-  const defaultImage = "src/assets/user.png";
+  const defaultImage = "/assets/user.png";
   useEffect(() => {
     if (!actualUser || !actualUser.id) return;
   });
@@ -130,7 +130,7 @@ const Navbar = () => {
                   <IoClose size={40} />
                 </button>
                 <div className=" h-full justi flex flex-col gap-10 justi items-center mt-5 w-full roboto-400 ">
-                {isAuthenticated ? (
+                  {isAuthenticated ? (
                     <>
                       <div className=" w-full border-b-2 border-white/20 flex flex-row items-center gap-4 justify-end  px-4 py-1 ">
                         <span className="roboto-400 text-xl">{actualUser.username}</span>
@@ -140,24 +140,24 @@ const Navbar = () => {
                           className=" w-20 rounded-full"
                         />
                       </div>
-                     
-                        <NavLink
-                          to={`/user/${actualUser.id}`}
-                          className="flex items-center gap-2 w-full px-6 "
-                        >
-                          <FaUser size={18}/>
-                          Mi perfil
-                        </NavLink>
-                        <NavLink
-                          to={`/user/${actualUser.id}/masks`}
-                          className=" flex items-center gap-2 w-full px-6"
-                        >
-                          <PiMaskHappyFill size={20} />
-                          Mis Mascaras
-                        </NavLink>
-                        
-                      </>
-                    
+
+                      <NavLink
+                        to={`/user/${actualUser.id}`}
+                        className="flex items-center gap-2 w-full px-6 "
+                      >
+                        <FaUser size={18} />
+                        Mi perfil
+                      </NavLink>
+                      <NavLink
+                        to={`/user/${actualUser.id}/masks`}
+                        className=" flex items-center gap-2 w-full px-6"
+                      >
+                        <PiMaskHappyFill size={20} />
+                        Mis Mascaras
+                      </NavLink>
+
+                    </>
+
                   ) : (
                     <>
                       <NavLink
@@ -187,15 +187,15 @@ const Navbar = () => {
                     className="flex items-center gap-2 w-full px-6 "
                     end
                   >
-                    <PiBooksFill size={20}/>
+                    <PiBooksFill size={20} />
                     Libreria
                   </NavLink>
                   <NavLink
                     to="/create-character"
-                   className="flex items-center gap-2 w-full px-6 "
+                    className="flex items-center gap-2 w-full px-6 "
                     end
                   >
-                    <PiUserCirclePlusFill size={20}/>
+                    <PiUserCirclePlusFill size={20} />
                     Crear Personaje
                   </NavLink>
                   <NavLink
@@ -203,17 +203,17 @@ const Navbar = () => {
                     className="flex items-center gap-2 w-full px-6 "
                     end
                   >
-                    <PiCurrencyCircleDollarFill size={20}/>
+                    <PiCurrencyCircleDollarFill size={20} />
                     Planes
                   </NavLink>
 
-                  {isAuthenticated?<button
-                          className=" cursor-pointer text-purple-300 font-semibold mt-10 bg-white/20 px-2 py-1 rounded-lg "
-                          onClick={logout}
-                        >
-                          Cerrar sesion
-                        </button>:""}
-                  
+                  {isAuthenticated ? <button
+                    className=" cursor-pointer text-purple-300 font-semibold mt-10 bg-white/20 px-2 py-1 rounded-lg "
+                    onClick={logout}
+                  >
+                    Cerrar sesion
+                  </button> : ""}
+
                 </div>
 
               </div>
