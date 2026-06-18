@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router";
 import axios from "axios";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 
 const ModalChat = ({
   modalchatClose,
@@ -17,9 +17,9 @@ const ModalChat = ({
 
   const startOrGetChat = async () => {
     try {
- 
+
       const response = await axios.post(
-        "https://personifai-back-end.onrender.com/api/v1/conversations/get-or-create",
+        `${import.meta.env.VITE_API_URL}conversations/get-or-create`,
         {
           userId: actualUserId,
           characterId,
@@ -46,37 +46,37 @@ const ModalChat = ({
 
   return (
     <motion.div
-            className="fixed inset-0 flex items-center z-50 justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            exit={{ opacity: 0, y:20 }}>
+      className="fixed inset-0 flex items-center z-50 justify-center bg-neutral-950/75 backdrop-invert backdrop-opacity-10"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      exit={{ opacity: 0, y: 20 }}>
       <div className="bg-black/80 border border-purple-500/20 backdrop-blur-lg text-white w-full max-w-md px-6 py-10 rounded-xl">
         <h2 className="text-xl font-bold mb-12 roboto-700 text-start">
           Proveedor de AI y mascara
         </h2>
         <form className="flex flex-col gap-8">
           <div className="space-y-2 flex flex-col">
-          <label htmlFor="provider" className="roboto-600 text-start">
-            Proveedor
-          </label>
-          <select
-            name="provider"
-            id="provider"
-            className="px-3 py-3 rounded-xl w-full bg-black/40 border border-white/10 text-white"
-            value={provider}
-            onChange={(e) => setProvider(e.target.value)}
-          >
-            <option className="bg-black/90 border border-white/10 text-white" value="gemini">
-              Gemini
-            </option>
-            <option className="bg-black/90 border border-white/10 text-white" value="openai">
-              OpenAI
-            </option>
-            <option className="bg-black/90 border border-white/10 text-white" value="llama">
-              Llama
-            </option>
-          </select>
+            <label htmlFor="provider" className="roboto-600 text-start">
+              Proveedor
+            </label>
+            <select
+              name="provider"
+              id="provider"
+              className="px-3 py-3 rounded-xl w-full bg-black/40 border border-white/10 text-white"
+              value={provider}
+              onChange={(e) => setProvider(e.target.value)}
+            >
+              <option className="bg-black/90 border border-white/10 text-white" value="gemini">
+                Gemini
+              </option>
+              <option className="bg-black/90 border border-white/10 text-white" value="openai">
+                OpenAI
+              </option>
+              <option className="bg-black/90 border border-white/10 text-white" value="llama">
+                Llama
+              </option>
+            </select>
           </div>
 
           {masks.length === 0 ? (
@@ -130,7 +130,7 @@ const ModalChat = ({
           </button>
         </div>
       </div>
-    
+
     </motion.div>
   );
 };

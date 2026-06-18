@@ -17,7 +17,7 @@ const MasksPage = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false)
 
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/users";
+  const API_URL = import.meta.env.VITE_API_URL + "/users";
 
   useEffect(() => {
     const fetchUserMasks = async () => {
@@ -31,7 +31,7 @@ const MasksPage = () => {
         setUserMasks(response.data.data.masks);
       } catch (err) {
         console.log(err);
-      }finally{
+      } finally {
         setIsLoading(false)
       }
     };
@@ -147,7 +147,7 @@ const MasksPage = () => {
           </div>
         </motion.div>
 
-        { isLoading ? <div className="loader mx-auto"></div> : (
+        {isLoading ? <div className="loader mx-auto"></div> : (
 
           userMasks.length === 0 ? (
             <p>No tenés máscaras todavía.</p>

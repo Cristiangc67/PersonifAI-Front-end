@@ -12,7 +12,7 @@ const ChatPage = () => {
   const { id } = useParams();
   const [chat, setChat] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
+  const API_URL = import.meta.env.VITE_API_URL + "conversations";
   useEffect(() => {
     const fetchConversationData = async () => {
       try {
@@ -34,18 +34,18 @@ const ChatPage = () => {
       <Navbar />
       <div className="flex app pt-3 overflow-x-hidden">
         {actualUser && chat ? (
-          <HistoryChats userId={actualUser.id}  chat={chat} />
+          <HistoryChats userId={actualUser.id} chat={chat} />
         ) : (
           ""
         )}
         {isLoading ? (
-    <div className="w-full h-full bg-neutral-900 mx-auto  overflow-x-hidden animate-pulse"></div>
-  ) : (
-    <>
-      {chat && <Chat  chat={chat} id={id} />}
-      {chat && <ChatBar  chat={chat} />}
-    </>
-  )}
+          <div className="w-full h-full bg-neutral-900 mx-auto  overflow-x-hidden animate-pulse"></div>
+        ) : (
+          <>
+            {chat && <Chat key={id} chat={chat} id={id} />}
+            {chat && <ChatBar key={id} chat={chat} />}
+          </>
+        )}
       </div>
     </>
   );

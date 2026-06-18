@@ -4,12 +4,12 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
-const API_URL = "https://personifai-back-end.onrender.com/api/v1/auth";
+const API_URL = import.meta.env.VITE_API_URL + "auth";
 
 export const AuthProvider = ({ children }) => {
   const [actualUser, setActualUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
           logout();
         }
       }
-      setIsLoading(false); 
+      setIsLoading(false);
     };
     initializeAuth()
   }, [token]);
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     if (!token) return;
     try {
       const res = await axios.get(
-        `https://personifai-back-end.onrender.com/api/v1/users/${actualUser.id}`,
+        `${import.meta.env.VITE_API_URL}users/${actualUser.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

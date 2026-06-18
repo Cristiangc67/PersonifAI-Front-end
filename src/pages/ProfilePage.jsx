@@ -12,7 +12,7 @@ import { FaUserPlus } from "react-icons/fa";
 const ProfilePage = () => {
   const { isAuthenticated, logout, actualUser, token } =
     useContext(AuthContext);
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/users";
+  const API_URL = import.meta.env.VITE_API_URL + "/users";
   const [userProfile, setUserProfile] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -26,7 +26,7 @@ const ProfilePage = () => {
             authorization: `Bearer ${token}`,
           },
         });
- 
+
         setUserProfile(response.data.data);
 
       } catch (err) {
@@ -195,13 +195,13 @@ const ProfilePage = () => {
 
           <AnimatePresence>
 
-          {modalOpen && userProfile && (
-            <ModalFollower
-              modalType={modalType}
-              closeModal={closeModal}
-              userProfile={userProfile}
-            />
-          )}
+            {modalOpen && userProfile && (
+              <ModalFollower
+                modalType={modalType}
+                closeModal={closeModal}
+                userProfile={userProfile}
+              />
+            )}
           </AnimatePresence>
 
           <motion.div
@@ -216,15 +216,15 @@ const ProfilePage = () => {
             <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {userProfile
                 ? userProfile.createdCharacters.map((character, index) => {
-                    return (
-                      <CharactersUser
-                        index={index}
-                        id={character._id}
-                        characterPicture={character.characterPicture}
-                        name={character.name}
-                      />
-                    );
-                  })
+                  return (
+                    <CharactersUser
+                      index={index}
+                      id={character._id}
+                      characterPicture={character.characterPicture}
+                      name={character.name}
+                    />
+                  );
+                })
                 : "NO hay nada"}
             </div>
           </motion.div>

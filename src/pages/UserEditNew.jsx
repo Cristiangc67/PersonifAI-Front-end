@@ -15,7 +15,7 @@ const UserEditNew = () => {
     username: "",
     email: "",
   });
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/users";
+  const API_URL = import.meta.env.VITE_API_URL + "users";
 
   const [image, setImage] = useState(null);
 

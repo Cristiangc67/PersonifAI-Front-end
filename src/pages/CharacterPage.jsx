@@ -12,7 +12,7 @@ import { MdOutlineChatBubbleOutline } from "react-icons/md";
 
 const CharacterPage = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
+  const API_URL = import.meta.env.VITE_API_URL + "character";
   const [character, setCharacter] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [characterSections, setCharactersections] = useState([]);
@@ -26,7 +26,7 @@ const CharacterPage = () => {
       try {
         const response = await axios.get(`${API_URL}/${id}`);
         setCharacter(response.data.data);
- 
+
       } catch (error) {
         console.log(error);
       }
@@ -35,7 +35,7 @@ const CharacterPage = () => {
     const fetchMasks = async () => {
       try {
         const response = await axios.get(
-          `https://personifai-back-end.onrender.com/api/v1/users/${actualUser.id}/masks`,
+          `${import.meta.env.VITE_API_URL}users/${actualUser.id}/masks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -195,10 +195,10 @@ const CharacterPage = () => {
       </main>
 
       {modalOpen &&
-      id &&
-      character.name &&
-      isAuthenticated &&
-      actualUser.id === character.creator._id ? (
+        id &&
+        character.name &&
+        isAuthenticated &&
+        actualUser.id === character.creator._id ? (
         <ModalDelete
           name={character.name}
           modalClose={modalClose}
@@ -209,20 +209,20 @@ const CharacterPage = () => {
         ""
       )}
       <AnimatePresence>
-      {chatModalOpen && character.name && isAuthenticated && masks ? (
-        
-        <ModalChat
-          modalchatClose={modalChatClose}
-          masks={masks}
-          actualUserId={actualUser.id}
-          token={token}
-          characterId={character._id}
-          isFromChat={false}
-        />
-        
-      ) : (
-        ""
-      )}
+        {chatModalOpen && character.name && isAuthenticated && masks ? (
+
+          <ModalChat
+            modalchatClose={modalChatClose}
+            masks={masks}
+            actualUserId={actualUser.id}
+            token={token}
+            characterId={character._id}
+            isFromChat={false}
+          />
+
+        ) : (
+          ""
+        )}
       </AnimatePresence>
     </div>
   );

@@ -14,7 +14,8 @@ const CharacterEdit = () => {
     scenario: "",
     cardDescription: "",
   });
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/character";
+  const API_URL = import.meta.env.VITE_API_URL + "character";
+
 
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -38,7 +39,7 @@ const CharacterEdit = () => {
 
     const formData = new FormData();
     const userId = isAuthenticated ? actualUser.id : "";
-  
+
 
     for (const key in form) {
       formData.append(key, form[key]);

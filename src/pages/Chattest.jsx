@@ -7,12 +7,12 @@ const Chattest = () => {
   const { actualUser, isAuthenticated, token } = useContext(AuthContext);
   const { id } = useParams();
   const [chat, setChat] = useState(null);
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
+  const API_URL = import.meta.env.VITE_API_URL + "conversations";
   useEffect(() => {
     const fetchConversationData = async () => {
       try {
         const response = await axios.get(`${API_URL}/${id}`);
-  
+
         setChat(response.data.data);
       } catch (error) {
         console.log(error);
@@ -24,7 +24,7 @@ const Chattest = () => {
   return (
     <div>
       <p>
-        {chat?.conversation.mask.name}-{}-{chat?.conversation._id}
+        {chat?.conversation.mask.name}-{ }-{chat?.conversation._id}
       </p>
     </div>
   );

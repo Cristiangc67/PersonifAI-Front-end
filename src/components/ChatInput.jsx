@@ -11,7 +11,7 @@ const ChatInput = ({
   setIsLoading,
   provider
 }) => {
-  const API_URL = "https://personifai-back-end.onrender.com/api/v1/conversations";
+  const API_URL = import.meta.env.VITE_API_URL + "conversations";
   const [input, setInput] = useState("");
 
   const interactWithCharacter = async (chatSession, userPrompt) => {
@@ -19,16 +19,16 @@ const ChatInput = ({
 
       const result = await chatSession.sendMessage(userPrompt);
       let textResult = null
-     if(provider==="gemini"){
-      textResult=result.response.text()  
+      if (provider === "gemini") {
+        textResult = result.response.text()
 
 
-     }else if(provider==="llama"){
-      textResult=result
-      console.log(textResult)
-     }
-      
-      return  textResult                          //result.response.candidates[0].content.parts[0].text //result.response.text();
+      } else if (provider === "llama") {
+        textResult = result
+        console.log(textResult)
+      }
+
+      return textResult                          //result.response.candidates[0].content.parts[0].text //result.response.text();
     } catch (error) {
       console.error("Error interacting with the API:", error);
       return "Ocurrió un error al obtener la respuesta.";
@@ -61,8 +61,8 @@ const ChatInput = ({
       ]);
     } catch (error) {
       console.log(error);
-    }finally {
-      
+    } finally {
+
       setIsLoading(false);
     }
   };
