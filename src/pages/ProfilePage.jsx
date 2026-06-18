@@ -12,7 +12,7 @@ import { FaUserPlus } from "react-icons/fa";
 const ProfilePage = () => {
   const { isAuthenticated, logout, actualUser, token } =
     useContext(AuthContext);
-  const API_URL = import.meta.env.VITE_API_URL + "/users";
+  const API_URL = import.meta.env.VITE_API_URL + "users";
   const [userProfile, setUserProfile] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
