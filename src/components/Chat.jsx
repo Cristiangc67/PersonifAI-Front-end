@@ -18,7 +18,7 @@ const Chat = ({ chat, id }) => {
   const validateApiKey = async (key) => {
     try {
       const genAI = new GoogleGenerativeAI(key);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
       await model.generateContent("Prueba");
       return true;
     } catch (error) {
@@ -46,7 +46,7 @@ const Chat = ({ chat, id }) => {
   const createGeminiChatSession = (apiKey) => {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-flash-latest",
       systemInstruction: `Transcripción textual de una conversación interminable entre el usuario y ${characterName}, cuando relates las acciones de ${characterName} utiliza la tercera persona, para sus diálogos habla en primera persona. Para el diálogo utiliza markdown ejemplo: **"Hola"** y para las acciones y narraciones utiliza markdown ejemplo: *Saluda con una sonrisa*`,
     });
 
