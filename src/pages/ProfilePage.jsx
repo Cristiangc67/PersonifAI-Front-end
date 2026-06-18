@@ -95,7 +95,7 @@ const ProfilePage = () => {
             transition={{ duration: 0.5 }}
             className="relative mb-6"
           >
-            {userProfile && userProfile.profilePicture && (
+            {userProfile && (
               <img
                 src={
                   userProfile.profilePicture != null
